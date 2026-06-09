@@ -1,0 +1,1 @@
+"""Fixed SQL injection demo."""

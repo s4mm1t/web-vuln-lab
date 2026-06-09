@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="demo-panel">
+  <p class="eyebrow">Vulnerable File Upload</p>
+  <h1>Upload any file with the original name</h1>
+  <p>The app accepts any extension and stores files in a directly reachable location.</p>
+
+  <form method="post" enctype="multipart/form-data">
+    <label>
+      File
+      <input type="file" name="file">
+    </label>
+    <button type="submit">Upload</button>
+  </form>
+
+  {% if message %}
+  <p class="result danger">{{ message }}</p>
+  {% endif %}
+
+  {% if file_url %}
+  <p><a href="{{ file_url }}">Open uploaded file</a></p>
+  {% endif %}
+</section>
+{% endblock %}

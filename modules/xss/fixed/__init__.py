@@ -1,0 +1,1 @@
+"""Fixed reflected XSS demo."""

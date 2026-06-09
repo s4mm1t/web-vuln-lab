@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="demo-panel">
+  <p class="eyebrow">Fixed File Upload</p>
+  <h1>Upload with extension, magic-byte, size, and name controls</h1>
+  <p>Only PNG and JPEG images are accepted. Files are renamed and stored outside public routes.</p>
+
+  <form method="post" enctype="multipart/form-data">
+    <label>
+      File
+      <input type="file" name="file" accept=".png,.jpg,.jpeg,image/png,image/jpeg">
+    </label>
+    <button type="submit">Upload</button>
+  </form>
+
+  {% if message %}
+  <p class="result safe">{{ message }}</p>
+  {% endif %}
+
+  {% if saved_name %}
+  <p class="hint">Stored internally as <code>{{ saved_name }}</code>.</p>
+  {% endif %}
+</section>
+{% endblock %}

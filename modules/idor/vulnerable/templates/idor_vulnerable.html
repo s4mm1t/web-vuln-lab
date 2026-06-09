@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="demo-panel">
+  <p class="eyebrow">Vulnerable IDOR</p>
+  <h1>Profile by URL id</h1>
+  <p>You are logged in as user 1. Change <code>?id=1</code> to <code>?id=2</code> to view another profile.</p>
+
+  <form method="get">
+    <label>
+      Profile id
+      <input name="id" value="{{ profile_id }}">
+    </label>
+    <button type="submit">Open profile</button>
+  </form>
+
+  {% if profile %}
+  <div class="result danger">
+    <strong>{{ profile.name }}</strong><br>
+    {{ profile.email }}<br>
+    Plan: {{ profile.plan }}
+  </div>
+  {% else %}
+  <p class="result danger">Profile not found.</p>
+  {% endif %}
+</section>
+{% endblock %}

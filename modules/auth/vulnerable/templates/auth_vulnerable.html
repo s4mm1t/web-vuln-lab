@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="demo-panel">
+  <p class="eyebrow">Vulnerable Broken Auth</p>
+  <h1>Login through GET parameters</h1>
+  <p>Try <code>/auth/vulnerable?username=admin&amp;password=123456</code>.</p>
+
+  <form method="get">
+    <label>
+      Username
+      <input name="username" autocomplete="username" value="{{ username or 'admin' }}">
+    </label>
+    <label>
+      Password
+      <input name="password" autocomplete="current-password" value="{{ password or '123456' }}">
+    </label>
+    <button type="submit">Log in</button>
+  </form>
+
+  {% if message %}
+  <p class="result danger">{{ message }}</p>
+  {% endif %}
+</section>
+{% endblock %}

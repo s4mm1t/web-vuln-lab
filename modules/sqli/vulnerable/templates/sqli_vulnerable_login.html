@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="demo-panel">
+  <p class="eyebrow">Vulnerable SQL Injection</p>
+  <h1>Login with string-built SQL</h1>
+  <p>Try username <code>admin' --</code> with any password to bypass the password check.</p>
+
+  <form method="post">
+    <label>
+      Username
+      <input name="username" autocomplete="username" value="admin">
+    </label>
+    <label>
+      Password
+      <input name="password" autocomplete="current-password" value="wrong">
+    </label>
+    <button type="submit">Log in</button>
+  </form>
+
+  {% if sql %}
+  <div class="result danger">
+    <strong>Executed SQL</strong>
+    <pre>{{ sql }}</pre>
+  </div>
+  {% endif %}
+
+  {% if result %}
+  <p class="result danger">{{ result }}</p>
+  {% endif %}
+</section>
+{% endblock %}

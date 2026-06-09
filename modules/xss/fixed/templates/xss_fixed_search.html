@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="demo-panel">
+  <p class="eyebrow">Fixed XSS</p>
+  <h1>Search page with escaped output</h1>
+  <p>Jinja2 escapes the query by default, and the response also sends a restrictive CSP header.</p>
+
+  <form method="get">
+    <label>
+      Query
+      <input name="q" value="{{ query }}">
+    </label>
+    <button type="submit">Search</button>
+  </form>
+
+  {% if query %}
+  <div class="result safe">
+    Search results for: {{ query }}
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

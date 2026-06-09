@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="demo-panel">
+  <p class="eyebrow">Vulnerable XSS</p>
+  <h1>Search page with unsafe output</h1>
+  <p>Try <code>&lt;script&gt;alert(1)&lt;/script&gt;</code> as the search query.</p>
+
+  <form method="get">
+    <label>
+      Query
+      <input name="q" value="{{ query }}">
+    </label>
+    <button type="submit">Search</button>
+  </form>
+
+  {% if query %}
+  <div class="result danger">
+    Search results for: {{ query|safe }}
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

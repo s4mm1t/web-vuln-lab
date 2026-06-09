@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="demo-panel">
+  <p class="eyebrow">Fixed Broken Auth</p>
+  <h1>Login with POST, bcrypt, and Flask session</h1>
+  <p>Use <code>admin</code> / <code>password123</code>. The password hash is stored server-side.</p>
+
+  <form method="post">
+    <label>
+      Username
+      <input name="username" autocomplete="username" value="admin">
+    </label>
+    <label>
+      Password
+      <input name="password" autocomplete="current-password" type="password">
+    </label>
+    <button type="submit">Log in</button>
+  </form>
+
+  {% if message %}
+  <p class="result safe">{{ message }}</p>
+  {% endif %}
+</section>
+{% endblock %}

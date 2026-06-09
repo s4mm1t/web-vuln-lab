@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="demo-panel">
+  <p class="eyebrow">Fixed IDOR</p>
+  <h1>Profile with ownership check</h1>
+  <p>The URL may contain an id, but the server still checks that the object belongs to the session user.</p>
+
+  <form method="get">
+    <label>
+      Profile id
+      <input name="id" value="{{ profile_id }}">
+    </label>
+    <button type="submit">Open profile</button>
+  </form>
+
+  <div class="result safe">
+    <strong>{{ profile.name }}</strong><br>
+    {{ profile.email }}<br>
+    Plan: {{ profile.plan }}
+  </div>
+</section>
+{% endblock %}

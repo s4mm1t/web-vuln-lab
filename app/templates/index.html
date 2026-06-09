@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+  <p class="eyebrow">Educational Flask lab</p>
+  <h1>Learn common web vulnerabilities by comparing unsafe code with secure fixes.</h1>
+  <p>
+    Each module contains a vulnerable demo, a fixed implementation, a writeup, and regression tests.
+    Run everything locally or in Docker.
+  </p>
+</section>
+
+<section class="module-grid">
+  {% for module in modules %}
+  <article class="module-card">
+    <div>
+      <h2>{{ module.name }}</h2>
+      <p>{{ module.description }}</p>
+      <span>{{ module.topic }}</span>
+    </div>
+    <div class="actions">
+      <a class="button danger" href="/{{ module.key }}/vulnerable">Vulnerable</a>
+      <a class="button safe" href="/{{ module.key }}/fixed">Fixed</a>
+      <a class="button neutral" href="/writeups/{{ module.key }}">Writeup</a>
+    </div>
+  </article>
+  {% endfor %}
+</section>
+{% endblock %}
