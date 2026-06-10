@@ -26,6 +26,8 @@ def seed_connection():
 def login():
     result = None
     query = "SELECT * FROM users WHERE username = ? AND password = ?"
+    username = "admin"
+    password = "password123"
 
     if request.method == "POST":
         username = request.form.get("username", "")
@@ -36,4 +38,10 @@ def login():
         conn.close()
         result = f"Welcome, {user['username']}!" if user else "Invalid credentials."
 
-    return render_template("sqli_fixed_login.html", result=result, query=query)
+    return render_template(
+        "sqli_fixed_login.html",
+        result=result,
+        query=query,
+        username=username,
+        password=password,
+    )

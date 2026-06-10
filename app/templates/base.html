@@ -4,7 +4,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ title or "Web Vulnerability Lab" }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+      (function () {
+        document.documentElement.classList.add("motion-ready");
+        try {
+          var theme = localStorage.getItem("lab-theme");
+          if (theme) document.documentElement.dataset.theme = theme;
+        } catch (error) {}
+      })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}?v=3">
+    <script src="{{ url_for('static', filename='app.js') }}?v=3" defer></script>
   </head>
   <body>
     <header class="topbar">
@@ -12,6 +22,9 @@
       <nav>
         <a href="{{ url_for('index') }}">Dashboard</a>
         <a href="/writeups/sqli">Writeups</a>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle display mode">
+          <span data-theme-label>Light mode</span>
+        </button>
       </nav>
     </header>
 

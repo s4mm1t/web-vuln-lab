@@ -4,7 +4,7 @@
 <section class="demo-panel">
   <p class="eyebrow">Vulnerable IDOR</p>
   <h1>Profile by URL id</h1>
-  <p>You are logged in as user 1. Change <code>?id=1</code> to <code>?id=2</code> to view another profile.</p>
+  <p>You are logged in as user 1. Here, entering <code>2</code> is the attack: the app trusts the URL id and leaks Bob's profile.</p>
 
   <form method="get">
     <label>
@@ -15,13 +15,14 @@
   </form>
 
   {% if profile %}
-  <div class="result danger">
+  <div class="result danger" data-result>
+    <span class="leak-label">Leaked profile for id={{ profile_id }}</span><br>
     <strong>{{ profile.name }}</strong><br>
     {{ profile.email }}<br>
     Plan: {{ profile.plan }}
   </div>
   {% else %}
-  <p class="result danger">Profile not found.</p>
+  <p class="result danger" data-result>Profile not found.</p>
   {% endif %}
 </section>
 {% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="writeup-shell">
+  <div class="writeup-nav">
+    <a class="button danger" href="/{{ module.key }}/vulnerable">Open Vulnerable</a>
+    <a class="button safe" href="/{{ module.key }}/fixed">Open Fixed</a>
+    <a class="button neutral" href="{{ url_for('index') }}">Back to Dashboard</a>
+  </div>
+
+  <div class="writeup-card">
+    <div class="writeup-meta">
+      <span>{{ module.name }}</span>
+      <span>{{ module.topic }}</span>
+    </div>
+    {{ content }}
+  </div>
+</article>
+{% endblock %}

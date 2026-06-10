@@ -6,7 +6,7 @@
   <h1>Search page with escaped output</h1>
   <p>Jinja2 escapes the query by default, and the response also sends a restrictive CSP header.</p>
 
-  <form method="get">
+  <form method="get" data-safe-flow="true">
     <label>
       Query
       <input name="q" value="{{ query }}">
@@ -15,7 +15,7 @@
   </form>
 
   {% if query %}
-  <div class="result safe">
+  <div class="result safe" data-result>
     Search results for: {{ query }}
   </div>
   {% endif %}

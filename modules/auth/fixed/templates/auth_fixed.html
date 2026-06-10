@@ -6,7 +6,7 @@
   <h1>Login with POST, bcrypt, and Flask session</h1>
   <p>Use <code>admin</code> / <code>password123</code>. The password hash is stored server-side.</p>
 
-  <form method="post">
+  <form method="post" data-safe-flow="true">
     <label>
       Username
       <input name="username" autocomplete="username" value="admin">
@@ -19,7 +19,7 @@
   </form>
 
   {% if message %}
-  <p class="result safe">{{ message }}</p>
+  <p class="result safe typewriter" data-result data-typewriter>{{ message }}</p>
   {% endif %}
 </section>
 {% endblock %}

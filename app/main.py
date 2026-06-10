@@ -1,6 +1,9 @@
 from pathlib import Path
+import html
+import re
 
-from flask import Flask, abort, render_template, Response
+from flask import Flask, abort, render_template
+from markupsafe import Markup
 
 
 MODULES = [
@@ -35,6 +38,92 @@ MODULES = [
         "description": "Profile lookup that demonstrates missing ownership checks.",
     },
 ]
+
+
+def render_inline_markdown(text):
+    escaped = html.escape(text)
+    escaped = re.sub(r"`([^`]+)`", r"<code>\1</code>", escaped)
+    escaped = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", escaped)
+    return escaped
+
+
+def render_markdown(markdown):
+    html_parts = []
+    in_code = False
+    in_list = False
+    in_section = False
+    code_lines = []
+    code_lang = ""
+
+    def close_list():
+        nonlocal in_list
+        if in_list:
+            html_parts.append("</ul>")
+            in_list = False
+
+    def close_section():
+        nonlocal in_section
+        close_list()
+        if in_section:
+            html_parts.append("</section>")
+            in_section = False
+
+    for raw_line in markdown.splitlines():
+        line = raw_line.rstrip()
+
+        if line.startswith("```"):
+            if in_code:
+                escaped_code = html.escape("\n".join(code_lines))
+                html_parts.append(
+                    f'<pre class="writeup-code" data-lang="{html.escape(code_lang)}"><code>{escaped_code}</code></pre>'
+                )
+                in_code = False
+                code_lines = []
+                code_lang = ""
+            else:
+                close_list()
+                in_code = True
+                code_lang = line.strip("`").strip() or "text"
+            continue
+
+        if in_code:
+            code_lines.append(line)
+            continue
+
+        if not line.strip():
+            close_list()
+            continue
+
+        if line.startswith("# "):
+            close_section()
+            title = render_inline_markdown(line[2:].strip())
+            html_parts.append(f'<header class="writeup-hero"><p class="eyebrow">Case writeup</p><h1>{title}</h1></header>')
+            continue
+
+        if line.startswith("## "):
+            close_section()
+            title = render_inline_markdown(line[3:].strip())
+            html_parts.append(f'<section class="writeup-section"><h2>{title}</h2>')
+            in_section = True
+            continue
+
+        if line.startswith("- "):
+            if not in_list:
+                html_parts.append('<ul class="writeup-list">')
+                in_list = True
+            item = render_inline_markdown(line[2:].strip())
+            html_parts.append(f"<li>{item}</li>")
+            continue
+
+        close_list()
+        paragraph = render_inline_markdown(line)
+        html_parts.append(f"<p>{paragraph}</p>")
+
+    if in_code:
+        escaped_code = html.escape("\n".join(code_lines))
+        html_parts.append(f'<pre class="writeup-code" data-lang="{html.escape(code_lang)}"><code>{escaped_code}</code></pre>')
+    close_section()
+    return Markup("\n".join(html_parts))
 
 
 def create_app(test_config=None):
@@ -81,8 +170,8 @@ def create_app(test_config=None):
 
     @app.get("/writeups/<module_key>")
     def writeup(module_key):
-        allowed = {module["key"] for module in MODULES}
-        if module_key not in allowed:
+        module = next((module for module in MODULES if module["key"] == module_key), None)
+        if module is None:
             abort(404)
 
         path = Path(app.root_path).parent / "modules" / module_key / "writeup.md"
@@ -90,7 +179,12 @@ def create_app(test_config=None):
             abort(404)
 
         content = path.read_text(encoding="utf-8")
-        return Response(content, mimetype="text/markdown; charset=utf-8")
+        return render_template(
+            "writeup.html",
+            content=render_markdown(content),
+            module=module,
+            title=f"{module['name']} Writeup",
+        )
 
     return app
 

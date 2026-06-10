@@ -6,7 +6,7 @@
   <h1>Upload with extension, magic-byte, size, and name controls</h1>
   <p>Only PNG and JPEG images are accepted. Files are renamed and stored outside public routes.</p>
 
-  <form method="post" enctype="multipart/form-data">
+  <form method="post" enctype="multipart/form-data" data-safe-flow="true">
     <label>
       File
       <input type="file" name="file" accept=".png,.jpg,.jpeg,image/png,image/jpeg">
@@ -15,7 +15,7 @@
   </form>
 
   {% if message %}
-  <p class="result safe">{{ message }}</p>
+  <p class="result safe typewriter" data-result data-typewriter data-confetti="{{ 'true' if saved_name else 'false' }}">{{ message }}</p>
   {% endif %}
 
   {% if saved_name %}

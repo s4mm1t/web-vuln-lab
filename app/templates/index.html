@@ -2,17 +2,31 @@
 
 {% block content %}
 <section class="hero">
-  <p class="eyebrow">Educational Flask lab</p>
-  <h1>Learn common web vulnerabilities by comparing unsafe code with secure fixes.</h1>
+  <p class="eyebrow">Cyber Detective Training Lab</p>
+  <h1>Trace real web vulnerabilities through unsafe code and hardened fixes.</h1>
   <p>
     Each module contains a vulnerable demo, a fixed implementation, a writeup, and regression tests.
     Run everything locally or in Docker.
   </p>
+  <div class="hero-metrics" aria-label="Lab summary">
+    <span class="metric"><strong>5</strong> modules</span>
+    <span class="metric"><strong>15</strong> security tests</span>
+    <span class="metric"><strong>10</strong> vulnerable/fixed demos</span>
+  </div>
+  <div class="hero-console" aria-hidden="true">
+    <span>casefile://web-vuln-lab</span>
+    <span>signal: local only</span>
+    <span>status: training mode</span>
+  </div>
 </section>
 
 <section class="module-grid">
   {% for module in modules %}
-  <article class="module-card">
+  <article class="module-card" data-tilt-card style="--i: {{ loop.index0 }}">
+    <div class="card-topline">
+      <span class="module-index">CASE 0{{ loop.index }}</span>
+      <span class="signal-dot" aria-hidden="true"></span>
+    </div>
     <div>
       <h2>{{ module.name }}</h2>
       <p>{{ module.description }}</p>

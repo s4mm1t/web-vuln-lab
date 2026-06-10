@@ -6,25 +6,25 @@
   <h1>Login with parameterized SQL</h1>
   <p>User input is sent as data through bound parameters, not merged into SQL text.</p>
 
-  <form method="post">
+  <form method="post" data-safe-flow="true">
     <label>
       Username
-      <input name="username" autocomplete="username" value="admin">
+      <input name="username" autocomplete="username" value="{{ username }}">
     </label>
     <label>
       Password
-      <input name="password" autocomplete="current-password" value="password123">
+      <input name="password" autocomplete="current-password" value="{{ password }}">
     </label>
     <button type="submit">Log in</button>
   </form>
 
-  <div class="result safe">
+  <div class="result safe" data-prepared>
     <strong>Prepared query</strong>
-    <pre>{{ query }}</pre>
+    <pre class="sql-code"><span class="sql-keyword">SELECT</span> * <span class="sql-keyword">FROM</span> users <span class="sql-keyword">WHERE</span> username = ? <span class="sql-keyword">AND</span> password = ?</pre>
   </div>
 
   {% if result %}
-  <p class="result safe">{{ result }}</p>
+  <p class="result safe typewriter" data-result data-typewriter data-confetti="{{ 'true' if result.startswith('Welcome') else 'false' }}">{{ result }}</p>
   {% endif %}
 </section>
 {% endblock %}

@@ -26,6 +26,8 @@ def seed_connection():
 def login():
     result = None
     sql = None
+    username = "admin"
+    password = "wrong"
 
     if request.method == "POST":
         username = request.form.get("username", "")
@@ -42,4 +44,10 @@ def login():
         finally:
             conn.close()
 
-    return render_template("sqli_vulnerable_login.html", result=result, sql=sql)
+    return render_template(
+        "sqli_vulnerable_login.html",
+        result=result,
+        sql=sql,
+        username=username,
+        password=password,
+    )

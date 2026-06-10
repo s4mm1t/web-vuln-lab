@@ -4,29 +4,27 @@
 <section class="demo-panel">
   <p class="eyebrow">Vulnerable SQL Injection</p>
   <h1>Login with string-built SQL</h1>
-  <p>Try username <code>admin' --</code> with any password to bypass the password check.</p>
+  <p>Plain values like <code>2</code> should still fail. The bug appears when input becomes SQL syntax: try username <code>admin' --</code> with any password.</p>
 
   <form method="post">
     <label>
       Username
-      <input name="username" autocomplete="username" value="admin">
+      <input name="username" autocomplete="username" value="{{ username }}" data-sqli-username>
     </label>
     <label>
       Password
-      <input name="password" autocomplete="current-password" value="wrong">
+      <input name="password" autocomplete="current-password" value="{{ password }}" data-sqli-password>
     </label>
     <button type="submit">Log in</button>
   </form>
 
-  {% if sql %}
   <div class="result danger">
-    <strong>Executed SQL</strong>
-    <pre>{{ sql }}</pre>
+    <strong>Live executed SQL</strong>
+    <pre class="sql-code" data-sqli-preview>{% if sql %}{{ sql }}{% endif %}</pre>
   </div>
-  {% endif %}
 
   {% if result %}
-  <p class="result danger">{{ result }}</p>
+  <p class="result danger typewriter" data-result data-typewriter>{{ result }}</p>
   {% endif %}
 </section>
 {% endblock %}
